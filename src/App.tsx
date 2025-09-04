@@ -1,7 +1,28 @@
 import { AppBar, Toolbar, Typography, Container, Box } from "@mui/material";
 import { AppImage, HeaderContainer } from "./AppTemplate";
+import type { AxiosResponse } from "axios";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 function App() {
+
+  const [itinerary, setItinerary] = useState<string | null>(null);
+
+  const getItinerary = async (): Promise<void> => {
+
+    try {
+      const response: AxiosResponse = await axios.get<string>("http://localhost:3000/api/ai/itinerary");
+      setItinerary(response.data);
+    }
+    catch (err) {
+      console.error(err);
+    }
+  }
+
+  useEffect(() => {
+    getItinerary()
+  }, [])
+
   return (
     <Box
       className="app-container"
@@ -13,7 +34,7 @@ function App() {
     >
       <AppBar position="static" color="transparent">
         <Toolbar>
-          <HeaderContainer><AppImage src="../public/travel.svg" />
+          <HeaderContainer><AppImage src="travel.svg" />
             <Typography variant="h6">Travel Planner</Typography></HeaderContainer>
         </Toolbar>
       </AppBar>
@@ -29,6 +50,9 @@ function App() {
         <Typography variant="body1" color="textSecondary">
           Welcome to Travel Planner!
         </Typography>
+        <div>
+          {itinerary}
+        </div>
       </Container>
 
       <Box
