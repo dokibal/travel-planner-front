@@ -5,23 +5,22 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 function App() {
-
   const [itinerary, setItinerary] = useState<string | null>(null);
 
   const getItinerary = async (): Promise<void> => {
-
     try {
-      const response: AxiosResponse = await axios.get<string>("http://localhost:3000/api/ai/itinerary");
+      const response: AxiosResponse = await axios.get<string>(
+        "https://travel-planner-back-7x1q.onrender.com/api/ai/itinerary"
+      );
       setItinerary(response.data);
-    }
-    catch (err) {
+    } catch (err) {
       console.error(err);
     }
-  }
+  };
 
   useEffect(() => {
-    getItinerary()
-  }, [])
+    getItinerary();
+  }, []);
 
   return (
     <Box
@@ -34,8 +33,10 @@ function App() {
     >
       <AppBar position="static" color="transparent">
         <Toolbar>
-          <HeaderContainer><AppImage src="travel.svg" />
-            <Typography variant="h6">Travel Planner</Typography></HeaderContainer>
+          <HeaderContainer>
+            <AppImage src="travel.svg" />
+            <Typography variant="h6">Travel Planner</Typography>
+          </HeaderContainer>
         </Toolbar>
       </AppBar>
 
@@ -50,9 +51,7 @@ function App() {
         <Typography variant="body1" color="textSecondary">
           Welcome to Travel Planner!
         </Typography>
-        <div>
-          {itinerary}
-        </div>
+        <div>{itinerary}</div>
       </Container>
 
       <Box
