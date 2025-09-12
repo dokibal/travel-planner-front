@@ -19,7 +19,7 @@ function CreateItinerary() {
     <>
       <TravelForm createItinerary={mutate} />
       {isPending ? (
-        <LinearProgress />
+        <LinearProgress sx={{ mt: "5em" }} />
       ) : (
         itineraryOutput && <Itinerary itineraryOutput={itineraryOutput} />
       )}

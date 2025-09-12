@@ -16,14 +16,15 @@ import {
 import { TravelType, type ItineraryInput } from "../../types/travel";
 import { useForm, Controller } from "react-hook-form";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import { useQuery } from "@tanstack/react-query";
+import { getCities } from "../../api";
+import { useSearch } from "../../hooks/useSearch";
 
 type TravelFormProps = {
   createItinerary: (itineraryInput: ItineraryInput) => void;
 };
 
 function TravelForm({ createItinerary }: Readonly<TravelFormProps>) {
-  const cities: string[] = ["San Francisco", "Budapest", "New York"];
-
   const { control, handleSubmit } = useForm<ItineraryInput>({
     defaultValues: {
       destination: "",
@@ -31,6 +32,14 @@ function TravelForm({ createItinerary }: Readonly<TravelFormProps>) {
       travelType: TravelType.SIGHTSEEING,
     },
     mode: "all",
+  });
+
+  const { searchTerm, setSearchTerm } = useSearch();
+
+  const { data: cities, isLoading: isCitiesLoading } = useQuery({
+    queryKey: [searchTerm],
+    queryFn: () => getCities(searchTerm),
+    staleTime: Infinity,
   });
 
   return (
@@ -46,7 +55,8 @@ function TravelForm({ createItinerary }: Readonly<TravelFormProps>) {
                 render={({ field, fieldState }) => (
                   <Autocomplete
                     {...field}
-                    options={cities}
+                    loading={isCitiesLoading}
+                    options={cities?.map((c) => c.name) ?? []}
                     value={field.value}
                     onChange={(_, value) => field.onChange(value)}
                     renderInput={(params) => (
@@ -55,6 +65,7 @@ function TravelForm({ createItinerary }: Readonly<TravelFormProps>) {
                         label="Destination"
                         error={fieldState.isTouched && !!fieldState.error}
                         helperText={fieldState.error?.message}
+                        onChange={(event) => setSearchTerm(event.target.value)}
                       />
                     )}
                   />
