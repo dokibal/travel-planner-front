@@ -5,8 +5,12 @@ import { LoadingText } from "./LoadingTemplate";
 export const Loading = () => {
   const [seconds, setSeconds] = useState<number>(0);
 
+  const WAIT_TIME_STEP: number = 0.5;
   useEffect(() => {
-    const interval = setInterval(() => setSeconds((s) => s + 1), 1000);
+    const interval = setInterval(
+      () => setSeconds((s) => s + WAIT_TIME_STEP),
+      WAIT_TIME_STEP * 1000
+    );
     return () => clearInterval(interval);
   }, []);
 
@@ -20,16 +24,18 @@ export const Loading = () => {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      <LoadingText variant="h5" sx={{ fontWeight: "bold" }}>
-        {getMessage()}
-      </LoadingText>
-    </Box>
+    seconds > WAIT_TIME_STEP && (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <LoadingText variant="h5" sx={{ fontWeight: "bold" }}>
+          {getMessage()}
+        </LoadingText>
+      </Box>
+    )
   );
 };
