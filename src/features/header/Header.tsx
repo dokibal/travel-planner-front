@@ -7,7 +7,7 @@ function Header() {
       <Toolbar>
         <HeaderContainer>
           <AppImage src="travel.svg" />
-          <Typography variant="h6">Travel Planner</Typography>
+          <Typography variant="h6">Dream Tripper</Typography>
         </HeaderContainer>
       </Toolbar>
     </AppBar>

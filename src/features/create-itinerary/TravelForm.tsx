@@ -22,9 +22,10 @@ import { useSearch } from "../../hooks/useSearch";
 
 type TravelFormProps = {
   createItinerary: (itineraryInput: ItineraryInput) => void;
+  isLoading: boolean;
 };
 
-function TravelForm({ createItinerary }: Readonly<TravelFormProps>) {
+function TravelForm({ createItinerary, isLoading }: Readonly<TravelFormProps>) {
   const { control, handleSubmit } = useForm<ItineraryInput>({
     defaultValues: {
       destination: "",
@@ -47,7 +48,7 @@ function TravelForm({ createItinerary }: Readonly<TravelFormProps>) {
       <CardContent>
         <form onSubmit={handleSubmit(createItinerary)}>
           <Grid container spacing="1em">
-            <Grid size={{ xs: 12, lg: 3 }}>
+            <Grid size={{ xs: 12, md: 3 }}>
               <Controller
                 name="destination"
                 control={control}
@@ -56,7 +57,19 @@ function TravelForm({ createItinerary }: Readonly<TravelFormProps>) {
                   <Autocomplete
                     {...field}
                     loading={isCitiesLoading}
+                    freeSolo
                     options={cities?.map((c) => c.name) ?? []}
+                    filterOptions={(options, state) => {
+                      const input = state.inputValue.toLowerCase();
+                      return options.filter(
+                        (o) =>
+                          o.toLowerCase().includes(input) ||
+                          cities
+                            ?.find((c) => c.name === o)
+                            ?.countryName.toLowerCase()
+                            .includes(input)
+                      );
+                    }}
                     value={field.value}
                     onChange={(_, value) => field.onChange(value)}
                     renderInput={(params) => (
@@ -68,11 +81,25 @@ function TravelForm({ createItinerary }: Readonly<TravelFormProps>) {
                         onChange={(event) => setSearchTerm(event.target.value)}
                       />
                     )}
+                    renderOption={({ key, ...props }, option) => (
+                      <li
+                        key={key}
+                        {...props}
+                        style={{ display: "flex", whiteSpace: "pre" }}
+                      >
+                        <Typography>{option}</Typography>
+                        <Typography color="grey">
+                          {` ${
+                            cities?.find((c) => c.name === option)?.countryName
+                          }`}
+                        </Typography>
+                      </li>
+                    )}
                   />
                 )}
               />
             </Grid>
-            <Grid size={{ xs: 12, lg: 4 }}>
+            <Grid size={{ xs: 12, md: 4 }}>
               <Controller
                 name="days"
                 control={control}
@@ -116,7 +143,14 @@ function TravelForm({ createItinerary }: Readonly<TravelFormProps>) {
                 )}
               />
             </Grid>
-            <Grid size={{ xs: 12, lg: 3 }}>
+            <Grid
+              size={{ xs: 12, md: 3 }}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <Controller
                 name="travelType"
                 control={control}
@@ -148,7 +182,7 @@ function TravelForm({ createItinerary }: Readonly<TravelFormProps>) {
               />
             </Grid>
             <Grid
-              size={{ xs: 12, lg: 2 }}
+              size={{ xs: 12, md: 2 }}
               sx={{
                 display: "flex",
                 alignItems: "center",
@@ -160,8 +194,9 @@ function TravelForm({ createItinerary }: Readonly<TravelFormProps>) {
                 type="submit"
                 variant="contained"
                 color="primary"
+                disabled={isLoading}
               >
-                Generate
+                {isLoading ? "Generating..." : "Generate"}
               </Button>
             </Grid>
           </Grid>

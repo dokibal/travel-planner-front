@@ -16,7 +16,7 @@ function Footer() {
       }}
     >
       <Typography variant="body2" color="text.secondary">
-        © 2025 Travel Planner. All rights reserved.
+        © 2025 Dream Tripper. All rights reserved.
       </Typography>
     </Box>
   );

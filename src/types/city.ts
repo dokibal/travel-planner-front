@@ -3,6 +3,7 @@ export type City = {
   latitude: number;
   longitude: number;
   countryCode: string;
+  countryName: string;
   population: number;
   elevation: number;
   timeZone: string;

@@ -15,8 +15,13 @@ export const createItinerary = async (
   return response.data;
 };
 
-export const wakeup = () => {
-  axios.get(`${API_URL}/wakeup`);
+export const sleep = (ms: number): Promise<void> => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
+export const wakeup = async () => {
+  await sleep(50000);
+  await axios.get(`${API_URL}/wakeup`);
 };
 
 export const getCities = async (searchTerm: string | null): Promise<City[]> => {
