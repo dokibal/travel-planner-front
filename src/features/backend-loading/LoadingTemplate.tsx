@@ -11,4 +11,5 @@ const colorShift = keyframes`
 export const LoadingText = styled(Typography)`
   margin-top: 1em;
   animation: ${colorShift} 3s ease-in-out infinite;
+  text-align: center;
 `;

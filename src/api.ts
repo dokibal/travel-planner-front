@@ -20,6 +20,7 @@ export const sleep = (ms: number): Promise<void> => {
 };
 
 export const wakeup = async () => {
+  await sleep(100000);
   await axios.get(`${API_URL}/wakeup`);
 };
 

@@ -18,7 +18,10 @@ export default function Itinerary({
 }: Readonly<ItineraryProps>) {
   return (
     <Card sx={{ mt: 2, borderRadius: 5, padding: 5 }} variant="outlined">
-      <Typography variant="h5">{`Your amazing trip itinerary to ${itineraryOutput.city}`}</Typography>
+      <Typography
+        variant="h5"
+        sx={{ mb: 1 }}
+      >{`Your amazing trip itinerary to ${itineraryOutput.city}`}</Typography>
       {itineraryOutput.days.map((day) => {
         return (
           <Accordion key={day.day} defaultExpanded>
