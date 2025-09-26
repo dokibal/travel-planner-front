@@ -5,7 +5,7 @@ import Header from "./features/header/Header";
 import Footer from "./features/footer/Footer";
 import { wakeup } from "./api";
 import { useState } from "react";
-import { Loading } from "./features/backend-loading/Loading";
+import { Loading } from "./features/loading/Loading";
 import theme from "./theme";
 
 function App() {
@@ -13,7 +13,10 @@ function App() {
 
   const [backendLoading, setBackendLoading] = useState<boolean>(true);
 
-  wakeup().then(() => setBackendLoading(false));
+  wakeup().then(() => {
+    console.log(`Loading set to false!`);
+    setBackendLoading(false);
+  });
 
   return (
     <ThemeProvider theme={theme}>

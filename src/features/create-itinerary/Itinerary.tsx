@@ -21,7 +21,7 @@ export default function Itinerary({
       <Typography
         variant="h5"
         sx={{ mb: 1 }}
-      >{`Your amazing trip itinerary to ${itineraryOutput.city}`}</Typography>
+      >{`Your amazing itinerary to ${itineraryOutput.city} is ready!`}</Typography>
       {itineraryOutput.days.map((day) => {
         return (
           <Accordion key={day.day} defaultExpanded>
